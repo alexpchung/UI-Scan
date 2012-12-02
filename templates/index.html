@@ -1,0 +1,252 @@
+$def with (scans)
+
+<style type="text/css">
+	/* base styles */
+	* {
+	margin:0;
+	padding:0;
+	}
+
+	img {
+	border:0;
+	}
+
+	a {
+	color:#d00000;
+	outline:none;
+	text-decoration:underline;
+	}
+
+	a:hover,a:active {
+	outline:0;
+	text-decoration:none;
+	}
+
+	html,body {
+	min-width:90%;
+	}
+
+	body {	
+	/*background-image:url(../images/tail-top.jpg);*/
+	background-position:center top;
+	background-repeat:repeat-x;
+	color:#828381;
+	font:100%/1.125em Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-style:normal;
+	position:relative;
+	}
+
+	ul li a {
+	color:#828387;
+	text-decoration:none;
+	}
+
+	ul li a:hover {
+	color:#E90000;
+	}
+
+	.container {
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:20px;
+	position:relative;
+	border-radius:10px;
+	width:100%;
+	}
+
+	/* main area */
+	.primary_content {
+	/* background:url(../images/contentBoxBg.png) no-repeat scroll center top transparent; */
+	background-color:#ededed;
+	overflow:hidden;
+	padding-bottom:45px;
+	}
+
+	.primary_content .column {
+	display:inline;
+	float:left;
+	margin-left:5px;
+	margin-right:5px;
+	padding-top:40px;
+	position:relative;
+	}
+
+	#column1 {
+	padding-left:40px;
+	padding-top:64px;
+	width:90%;
+	}
+
+	/* blocks */
+	.block,.block2 {
+	margin-bottom:30px;
+	}
+
+	.block .bcon,.block2 .bcon {
+	margin-bottom:10px;
+	}
+
+	.block h3,.block2 h3 {
+	color:#696969;
+	font-size:2em;
+	font-weight:400;
+	line-height:1.2em;
+	margin:0 0 30px;
+	}
+
+	.block .bcon p {
+	font-size:1.077em;
+	line-height:1.429em;
+	}
+
+	.block ul li {
+	background:none;
+	list-style-type:none;
+	margin:45px 0 0;
+	overflow:hidden;
+	padding:0;
+	position:relative;
+	vertical-align:top;
+	width:100%;
+	}
+
+	.block ul li:first-child {
+	margin-top:0;
+	}
+
+	.block ul li .date {
+	background:url() no-repeat left top;
+	background-color:#ededed;
+	color:#FFF;
+	cursor:pointer;
+	display:inline-block;
+	font-size:12px;
+	margin:3px 0 8px;
+	padding-left:5px;
+	}
+
+	.block ul li .date:hover {
+	background-position:left -23px;
+	}
+
+	.block ul li .date span {
+	background:url() no-repeat right top;
+	background-color:#ededed;
+	display:block;
+	padding-right:5px;
+	}
+
+	.block ul li .date:hover span {
+	background-position:right -23px;
+	}
+
+	.block ul li .date span span {
+	background:#335599;
+	height:23px;
+	line-height:23px;
+	padding:0 6px;
+	}
+
+	.block ul li .date:hover span span {
+	background:#696969;
+	}
+
+	.block ul li p {
+	margin:0;
+	}
+</style>
+
+<!-- Defining the main content section of the page -->
+<div class="primary_content container">
+
+    <!-- column #1 -->
+    <div id="column1" class="column">
+
+        <div class="block">
+            <h3>This is Code Scan App</h3>
+            <div class="bcon">
+                <p>Use for scanning and searching the source files for Fusion Application Labels. </p>
+                <p>All the attribute values are resolved using their respective resource bundles.  If the bundle library is not found, the bundle name will appear in the missing bundle file inside the output folder.</p>
+                <p>The data library is provided by Search Source Tool(http://adc2100106.us.oracle.com/cgi-bin/searchSource) and this application use Search Source Tool as an API.</p>
+                <p>The search results output files are stored in the application subfolder named: output/[dialog|explore|icon]***.txt</p>                
+            </div>
+        </div>
+
+        <div class="block">
+        	<h3>Scan History</h3>
+        	<div class="bcon">	 
+        		<table style="border:1px #ffffff solid;">			
+					<thead>
+						<tr>
+							<th scope="col">Session ID</th>
+							<th scope="col">Date</th>
+							<th scope="col">ScanType</th>
+							<th scope="col">Series</th>
+							<th scope="col">Label</th>
+							<th scope="col">Command</th>
+							<th scope="col">Command Arg</th>
+							<th scope="col">Files</th>
+							<th scope="col">Contents</th>							
+							<th scope="col">ComponentName</th>
+						</tr>
+					</thead>
+
+					<tfoot>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>		
+						</tr>
+					</tfoot>
+
+					$if scans:
+					<tbody>		
+						$for index, scan in enumerate(scans):
+						<tr>
+							$code:
+								fileLink = "file:///../output/" + scan['sessionKey'] + ".txt"
+
+							<td><a href=$fileLink  target="_blank">$scan['sessionKey']</a></td>
+							<td>$scan['runDate']</td>
+							<td>$scan['searchType']</td>
+							<td>$scan['series']</td>
+							<td>$scan['label']</td>
+							<td>$scan['command']</td>
+							$if scan['commandArgument']:
+								<td>$scan['commandArgument']</td>
+							$else:
+								<td>&nbsp;</td>
+							$if scan['files']:
+								<td>$scan['files']</td>
+							$else:
+								<td>&nbsp;</td>
+							$if scan['contents']:
+								<td>$scan['contents']</td>
+							$else:
+								<td>&nbsp;</td>								
+							$if scan['componentName']:
+								<td>$scan['componentName']</td>
+							$else:
+								<td>&nbsp;</td>			
+						</tr>
+					</tbody>
+				</table>
+        	</div>    
+        </div>
+
+    </div>
+
+</div>
